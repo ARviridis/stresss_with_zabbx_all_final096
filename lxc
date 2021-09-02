@@ -1,0 +1,37 @@
+FROM centos:8
+MAINTAINER kod
+yum -y install httpd
+
+yum install -y python3-mod_wsgi.x86_64
+yum install -y python3-devel
+yum install -y python3-setuptools
+yum install -y mc
+ 		RUN yum install -y epel-release
+		yum install -y htop
+mkdir /var/www/testapp
+. /var/www/testapp/
+cd /usr/local/bin; ln -s /usr/bin/python3 python
+
+adduser testapp
+cd /var/www/testapp
+dnf install -y gcc.x86_64
+yum install -y python3-pip
+yum clean all
+chown -R testapp:disk /var/www/testapp
+chcon -R -t httpd_sys_content_t /var/www/testapp
+apachectl configtest
+testapp.conf /etc/httpd/conf.d/testapp.conf
+
+/venv/lib/  /usr/local/lib/
+/venv/lib64/  /usr/local/lib64/
+
+
+yum clean all
+
+chmod 755 /usr/sbin/httpd 
+
+systemctl restart httpd
+systemctl enable httpd
+
+chmod 777 -R /usr/local/lib
+chmod 777 -R /usr/local/lib64

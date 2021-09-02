@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+{% block app_content %}
+<div style="text-align: center;">
+<h1>zabbx </h1>
+    <p>
+        <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
+        <script type="text/javascript" src="static/js/jquery.min.js"></script>
+    </p>
+         <div id="content"></div>
+     <script>
+        function show()
+        {
+            $.ajax({
+                url: "/zabbix",
+                data: $('form').serialize(),
+                cache: false,
+                success: function(html){
+                    $("#content").html(html);
+                }
+            });
+        }
+        $(document).ready(function(){
+            show();
+            setInterval('show()',1000);
+        });
+     </script>
+    <form action="/get_len" method="post" name="form">
+        <label for="name">Введите текст:</label>
+        <input id="name" name="name" type="text">
+        <input type="button" value="Отправить" onclick="get_len();">
+    </form>
+
+</div>
+{% endblock %}
+</html>
+</html>
